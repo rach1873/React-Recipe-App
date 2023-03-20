@@ -4,23 +4,25 @@ import Recipe from './Recipe';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { BookmarkContext } from './Bookmarkcontext';
+import { LocalmarkContext } from './LocalmarkContext';
 function RecipeMain() {
 
 
-    const lm = JSON.parse(window.localStorage.getItem('bookmark') || "[]")
+
 
     const [val, updateVal] = useState("");
     const [recipe, updateRecipe] = useState([]);
     const [bookmark, updateBookMark] = useContext(BookmarkContext);
-    const [localMarks, setLocalMarks] = useState(lm);
+    // const [localMarks, setLocalMarks] = useState(lm);
+    const [localmarks, setLocalMarks] = useContext(LocalmarkContext)
 
     useEffect(() => {
         const indexNum = bookmark.length - 1
         const index = recipe.findIndex(x => x.recipe.label === bookmark[indexNum]);
 
-        setLocalMarks([...localMarks, recipe[index]])
+        setLocalMarks([...localmarks, recipe[index]])
 
-        localStorage.setItem('bookmark', JSON.stringify(localMarks));
+        localStorage.setItem('bookmark', JSON.stringify(localmarks));
 
     }, [bookmark])
 

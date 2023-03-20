@@ -1,11 +1,19 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
+import { LocalmarkContext } from './LocalmarkContext';
 
 function Book(props) {
 
 
-    const deleteMark = (e) => {
-        console.log(e.target.id)
+    const [localmarks, setLocalMarks] = useContext(LocalmarkContext)
+
+    const removeBookmark = (e) => {
+
+        const r = localmarks.filter(y => y !== null).filter(z => z !== undefined).filter(x => x.recipe.label !== e.target.id)
+
+        setLocalMarks(r)
+
+        localStorage.setItem('bookmark', JSON.stringify(r));
+
     }
 
     return (
@@ -18,7 +26,7 @@ function Book(props) {
             </ul>
             <small>Servings: {props.yield}</small>
             <div className='space-x-4'>
-                <i className="fa-solid fa-trash text-3xl text-red-500" id={props.id} onClick={deleteMark}></i>
+                <i className="fa-solid fa-trash text-3xl text-red-500" id={props.id} onClick={removeBookmark}></i>
             </div>
         </div>
     )

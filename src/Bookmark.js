@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import { BookmarkContext } from './Bookmarkcontext';
 import Recipe from './Recipe';
 import Book from './Book';
+import { LocalmarkContext } from './LocalmarkContext';
 function Bookmark() {
 
 
     const [bookmark, updateBookMark] = useContext(BookmarkContext);
     const marksArray = JSON.parse(localStorage.getItem('bookmark')).filter(x => x !== null);
 
-
+    const [localmarks, setLocalMarks] = useContext(LocalmarkContext)
 
     return (
         <div className=''>
