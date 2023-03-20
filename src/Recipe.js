@@ -19,7 +19,9 @@ function Recipe(props) {
                 {props.ingredientLines.map(x => <li key={uuidv4()}>{x}</li>)}
             </ul>
             <small>Servings: {props.yield}</small>
-            <i className="fa-solid fa-bookmark text-3xl text-orange-500" id={props.label} onClick={handleBookMarks}></i>
+            <div className='space-x-4'>
+                <i className="fa-solid fa-bookmark text-3xl text-orange-500" id={props.label} onClick={handleBookMarks}></i>
+            </div>
         </div>
     )
 }

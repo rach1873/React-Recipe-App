@@ -1,15 +1,29 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import Recipe from './Recipe';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
-
+import { BookmarkContext } from './Bookmarkcontext';
 function RecipeMain() {
 
 
+    const lm = JSON.parse(window.localStorage.getItem('bookmark') || "[]")
+
     const [val, updateVal] = useState("");
     const [recipe, updateRecipe] = useState([]);
-    const [bookmark, updateBookMark] = useState([]);
+    const [bookmark, updateBookMark] = useContext(BookmarkContext);
+    const [localMarks, setLocalMarks] = useState(lm);
+
+    useEffect(() => {
+        const indexNum = bookmark.length - 1
+        const index = recipe.findIndex(x => x.recipe.label === bookmark[indexNum]);
+
+        setLocalMarks([...localMarks, recipe[index]])
+
+        localStorage.setItem('bookmark', JSON.stringify(localMarks));
+
+    }, [bookmark])
+
 
 
 
@@ -29,7 +43,7 @@ function RecipeMain() {
         }
 
         catch (err) {
-            console.log(err)
+            alert('Item Not Found!!')
         }
 
     }
@@ -46,7 +60,7 @@ function RecipeMain() {
                 <input
                     type="text"
                     placeholder="Enter Any Food Item"
-                    className='p-2 rounded-xl'
+                    className='p-2 rounded-xl outline-none'
                     value={val}
                     onChange={(e) => updateVal(e.target.value)}
                 />
