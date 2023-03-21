@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { BookmarkContext } from './Bookmarkcontext';
 import { LocalmarkContext } from './LocalmarkContext';
-function RecipeMain() {
+import { ClickContext } from './Clickcontext';
+function RecipeMain(props) {
 
 
 
@@ -13,8 +14,8 @@ function RecipeMain() {
     const [val, updateVal] = useState("");
     const [recipe, updateRecipe] = useState([]);
     const [bookmark, updateBookMark] = useContext(BookmarkContext);
-    // const [localMarks, setLocalMarks] = useState(lm);
     const [localmarks, setLocalMarks] = useContext(LocalmarkContext)
+    const [click, updateClick] = useContext(ClickContext);
 
     useEffect(() => {
         const indexNum = bookmark.length - 1
@@ -25,7 +26,6 @@ function RecipeMain() {
         localStorage.setItem('bookmark', JSON.stringify(localmarks));
 
     }, [bookmark])
-
 
 
 
@@ -40,6 +40,8 @@ function RecipeMain() {
 
         try {
             updateRecipe(response.data.hits)
+            sessionStorage.clear();
+            sessionStorage.setItem('recipes', JSON.stringify(response.data.hits))
 
 
         }
@@ -48,12 +50,20 @@ function RecipeMain() {
             alert('Item Not Found!!')
         }
 
+
+
+
     }
 
 
     const getBookMarks = (newbookmark) => {
         updateBookMark([...bookmark, newbookmark])
     }
+
+    const arr1 = sessionStorage.length ? JSON.parse(sessionStorage.getItem('recipes')).map((x) => <Recipe key={x.recipe.label} label={x.recipe.label} calories={x.recipe.calories} img={x.recipe.image} yield={x.recipe.yield} ingredientLines={x.recipe.ingredientLines} gb={getBookMarks} />) : []
+    const arr2 = recipe.map((x) => <Recipe key={x.recipe.label} label={x.recipe.label} calories={x.recipe.calories} img={x.recipe.image} yield={x.recipe.yield} ingredientLines={x.recipe.ingredientLines} gb={getBookMarks} />)
+
+
 
     return (
         <div className="grid grid-cols-1">
@@ -69,9 +79,11 @@ function RecipeMain() {
                 <button className='border-2 border-white mx-2 px-2 rounded-xl bg-green text-gray-400 hover:brightness-125' onClick={fetchData}>Get Recipe</button>
             </section>
             <section className='grid grid-cols-5 max-md:grid-cols-1'>
-                {recipe.map((x) => {
+                {/* {recipe.map((x) => {
                     return <Recipe key={x.recipe.label} label={x.recipe.label} calories={x.recipe.calories} img={x.recipe.image} yield={x.recipe.yield} ingredientLines={x.recipe.ingredientLines} gb={getBookMarks} />
-                })}
+                })} */}
+
+                {click ? arr1 : arr2}
 
             </section>
         </div>

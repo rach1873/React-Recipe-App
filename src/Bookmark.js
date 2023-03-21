@@ -4,19 +4,28 @@ import { BookmarkContext } from './Bookmarkcontext';
 import Recipe from './Recipe';
 import Book from './Book';
 import { LocalmarkContext } from './LocalmarkContext';
+import RecipeMain from './RecipeMain';
+import { ClickContext } from './Clickcontext';
 function Bookmark() {
+
 
 
     const [bookmark, updateBookMark] = useContext(BookmarkContext);
     const marksArray = JSON.parse(localStorage.getItem('bookmark')).filter(x => x !== null);
-
     const [localmarks, setLocalMarks] = useContext(LocalmarkContext)
+    const [click, updateClick] = useContext(ClickContext);
+
+
+
+    const reload = () => {
+        updateClick(true);
+    }
 
     return (
         <div className=''>
             <div className='flex items-center gap-2 justify-center'>
                 <Link to='/'>
-                    <i className="fa-solid fa-house text-3xl flex justify-center text-orange-500"></i>
+                    <i className="fa-solid fa-house text-3xl flex justify-center text-orange-500" onClick={reload}></i>
                 </Link>
                 <h1 className='text-4xl text-white underline'>BookMarks</h1>
             </div>
